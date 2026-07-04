@@ -28,14 +28,14 @@ function FeedCard({ post, label }) {
       className="group block min-w-0 overflow-hidden rounded-[1.75rem] border border-slate-200 bg-white shadow-[0_20px_50px_rgba(15,23,42,0.08)] transition duration-300 hover:-translate-y-1 hover:border-emerald-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400 focus-visible:ring-offset-2 focus-visible:ring-offset-white"
       aria-label={`Read latest feed item: ${post.title}`}
     >
-      <div className="grid min-w-0 grid-cols-1 gap-4 p-4 sm:grid-cols-[minmax(0,76px)_1fr] sm:p-5">
-        <div className="relative h-44 overflow-hidden rounded-[1.75rem] bg-slate-900 transition-transform duration-500 group-hover:scale-105 image-shadow sm:h-24 sm:w-24 sm:rounded-3xl">
+      <div className="grid min-w-0 grid-cols-1 gap-4 p-4 sm:grid-cols-[minmax(0,96px)_1fr] sm:p-5 lg:grid-cols-[minmax(0,128px)_1fr] lg:p-6">
+        <div className="relative h-44 overflow-hidden rounded-[1.75rem] bg-slate-900 transition-transform duration-500 group-hover:scale-105 image-shadow sm:h-28 sm:w-28 sm:rounded-3xl lg:h-32 lg:w-32">
           <Image
             src={post.image || "/images/project1.webp"}
             alt={post.title}
             fill
             className="dynamic-image object-cover"
-            sizes="(max-width: 640px) 100vw, 110px"
+            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 110px, 128px"
             placeholder="blur"
             blurDataURL="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 110 110'%3E%3Crect fill='%231e293b' width='110' height='110'/%3E%3C/svg%3E"
           />
