@@ -140,7 +140,7 @@ export default async function UpdatesPage() {
             )}
           </article>
 
-          <div className="space-y-6 lg:grid lg:grid-cols-[1.3fr_0.95fr] lg:gap-6 lg:space-y-0">
+          <div className="space-y-6">
             <section className="rounded-[2rem] border border-slate-200 bg-white p-6 shadow-[0_20px_50px_-30px_rgba(15,23,42,0.12)] md:p-8">
               <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
                 <div>
@@ -169,57 +169,12 @@ export default async function UpdatesPage() {
               </div>
             </section>
 
-            <section className="hidden rounded-[2rem] border border-slate-200 bg-white p-8 shadow-[0_20px_50px_-30px_rgba(15,23,42,0.12)] lg:block">
-              <div>
-                <p className="text-xs font-semibold uppercase tracking-[0.32em] text-emerald-700">
-                  Spotlight
-                </p>
-                <h3 className="mt-3 text-3xl font-black tracking-tight text-slate-950">
-                  Trending previews
-                </h3>
-                <p className="mt-3 text-sm leading-7 text-slate-600">
-                  Explore the most recent update thumbnails, design stories, and project highlights in a quick glance.
-                </p>
-              </div>
-
-              <div className="mt-8 space-y-4">
-                {feedPosts.slice(0, 4).map((post) => (
-                  <div
-                    key={post._id}
-                    className="group overflow-hidden rounded-[1.5rem] border border-slate-200 bg-slate-950 text-white transition duration-300 hover:-translate-y-0.5"
-                  >
-                    <div className="relative h-28 overflow-hidden">
-                      <Image
-                        src={post.image || "/images/project1.webp"}
-                        alt={post.title}
-                        fill
-                        className="object-cover transition duration-500 group-hover:scale-105"
-                        sizes="(max-width: 1024px) 100vw, 240px"
-                        placeholder="blur"
-                        blurDataURL="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 110 110'%3E%3Crect fill='%231e293b' width='110' height='110'/%3E%3C/svg%3E"
-                      />
-                    </div>
-                    <div className="p-4">
-                      <p className="text-[11px] uppercase tracking-[0.32em] text-emerald-300">
-                        {post.category || "Update"}
-                      </p>
-                      <h4 className="mt-2 text-sm font-semibold leading-6 text-white">
-                        {post.title}
-                      </h4>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </section>
-
-            <div className="lg:col-span-2">
-              <SectionTitle
-                eyebrow="Curated Gems"
-                title="Deep Dives & Insights"
-                subtitle="Explore thoughtful analysis, trend reports, and the ideas shaping our work. Every story is selected to help you discover something meaningful."
-                align="left"
-              />
-            </div>
+            <SectionTitle
+              eyebrow="Curated Gems"
+              title="Deep Dives & Insights"
+              subtitle="Explore thoughtful analysis, trend reports, and the ideas shaping our work. Every story is selected to help you discover something meaningful."
+              align="left"
+            />
           </div>
         </div>
       </section>
