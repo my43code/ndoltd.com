@@ -1,5 +1,6 @@
 import SectionTitle from "@/components/SectionTitle";
 import FloatingActions from "@/components/FloatingActions";
+import SlidingShow from "@/components/SlidingShow";
 import Link from "next/link";
 import Image from "next/image";
 import { connectMongoDB } from "@/lib/mongodb";
@@ -173,47 +174,31 @@ export default async function HomePage() {
       <section className="relative overflow-hidden bg-slate-950 py-20">
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(16,185,129,0.16),transparent_40%),radial-gradient(circle_at_bottom_right,rgba(59,130,246,0.12),transparent_35%)] pointer-events-none" />
         <div className="relative mx-auto max-w-7xl px-6">
-          <div className="grid gap-12 lg:grid-cols-[1.3fr_1fr] items-center">
+          <div className="grid items-center gap-12 lg:grid-cols-[1.05fr_0.95fr]">
             <div className="max-w-xl text-white">
               <p className="text-sm font-semibold uppercase tracking-[0.32em] text-emerald-300">
                 Visual workflow
               </p>
               <h2 className="mt-4 text-4xl font-black tracking-tight text-white md:text-5xl">
-                Computer screens that slide with your story.
+                Polished slides that bring your brand to life.
               </h2>
               <p className="mt-6 text-base leading-8 text-slate-300">
-                See how our design and development work feels polished, dynamic, and easy to browse with animated visual previews.
+                We blend motion, strong visuals, and clean storytelling so your website feels modern, credible, and memorable from the first scroll.
               </p>
-            </div>
-
-            <div className="overflow-hidden rounded-[2rem] border border-slate-800 bg-slate-900/90 p-5 shadow-2xl shadow-slate-950/20">
-              <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-                <div className="group relative h-48 sm:h-56 overflow-hidden rounded-[1.5rem] border border-slate-700 bg-slate-950 shadow-xl animate-float-slide transition-transform duration-700 hover:scale-105 image-shadow">
-                  <Image
-                    src="/images/project1.webp"
-                    alt="Sliding computer preview 1"
-                    fill
-                    className="dynamic-image object-cover"
-                  />
-                </div>
-                <div className="group relative h-52 sm:h-64 overflow-hidden rounded-[1.5rem] border border-slate-700 bg-slate-950 shadow-xl animate-float-slide-reverse transition-transform duration-700 hover:scale-105 image-shadow">
-                  <Image
-                    src="/images/team.webp"
-                    alt="Sliding computer preview 2"
-                    fill
-                    className="dynamic-image object-cover"
-                  />
-                </div>
-                <div className="group relative h-48 sm:h-56 overflow-hidden rounded-[1.5rem] border border-slate-700 bg-slate-950 shadow-xl animate-float-slide transition-transform duration-700 hover:scale-105 image-shadow">
-                  <Image
-                    src="/images/project1.JPG"
-                    alt="Sliding computer preview 3"
-                    fill
-                    className="dynamic-image object-cover"
-                  />
-                </div>
+              <div className="mt-8 flex flex-wrap gap-3">
+                <span className="rounded-full border border-white/10 bg-white/5 px-3 py-2 text-sm text-slate-200">
+                  Responsive design
+                </span>
+                <span className="rounded-full border border-white/10 bg-white/5 px-3 py-2 text-sm text-slate-200">
+                  SEO-ready structure
+                </span>
+                <span className="rounded-full border border-white/10 bg-white/5 px-3 py-2 text-sm text-slate-200">
+                  Faster engagement
+                </span>
               </div>
             </div>
+
+            <SlidingShow />
           </div>
         </div>
       </section>

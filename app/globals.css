@@ -471,6 +471,22 @@ body {
 
 /* ============= INTERACTIVE EFFECTS ============= */
 
+@keyframes gentle-pan {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0);
+  }
+  50% {
+    transform: translate3d(0, -8px, 0);
+  }
+}
+
+.animate-gentle-pan {
+  animation: gentle-pan 6s ease-in-out infinite;
+}
+
+/* ============= INTERACTIVE EFFECTS ============= */
+
 /* Smooth Transitions */
 .transition-all {
   transition: all 0.3s ease-in-out;
