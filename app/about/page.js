@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ArrowRight, BadgeCheck, Layers3, Sparkles, Users2 } from "lucide-react";
+import { ArrowRight, BadgeCheck, Layers3, Sparkles, Users2, Mail, Phone, Link2 } from "lucide-react";
 import SectionTitle from "@/components/SectionTitle";
 import ServiceCard from "@/components/ServiceCard";
 import PostCard from "@/components/PostCard";
@@ -138,30 +138,57 @@ function ProjectCard({ project }) {
 function TeamCard({ member }) {
   return (
     <article className="group overflow-hidden rounded-[1.8rem] border border-slate-200 bg-white shadow-[0_18px_50px_rgba(15,23,42,0.08)] transition duration-300 group-hover:-translate-y-1 group-hover:shadow-[0_24px_60px_rgba(15,23,42,0.14)]">
-      {member?.image || member?.video ? (
-        <MediaFrame
-          image={member.image}
-          video={member.video}
-          alt={member?.name || "Team member"}
-          className="aspect-[4/5]"
-          sizes="(max-width: 768px) 100vw, 25vw"
-          overlay
-        />
+      {member?.image ? (
+        <div className="relative aspect-[4/5] overflow-hidden bg-slate-100">
+          <img
+            src={member.image}
+            alt={member?.name || "Team member"}
+            className="h-full w-full object-cover transition duration-500 group-hover:scale-105"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-slate-950/15 to-transparent" />
+          <div className="absolute inset-x-0 bottom-0 p-5">
+            <p className="text-[11px] font-semibold uppercase tracking-[0.32em] text-emerald-200">
+              Team member
+            </p>
+            <h3 className="mt-2 text-2xl font-bold text-white">{member?.name || "Team member"}</h3>
+          </div>
+        </div>
       ) : (
         <div className="flex aspect-[4/5] items-end bg-gradient-to-br from-slate-950 via-slate-800 to-emerald-900 p-6 text-white">
           <div>
-            <p className="text-xs uppercase tracking-[0.32em] text-emerald-200">
-              Team
-            </p>
+            <p className="text-xs uppercase tracking-[0.32em] text-emerald-200">Team</p>
             <h3 className="mt-3 text-2xl font-bold">{member?.name || "Team member"}</h3>
             <p className="mt-2 text-sm text-slate-300">{member?.role || "Role"}</p>
           </div>
         </div>
       )}
 
-      <div className="p-5">
-        <h3 className="text-xl font-bold text-slate-950">{member?.name || "Team member"}</h3>
-        <p className="mt-2 text-sm leading-7 text-slate-600">{member?.role || "Role"}</p>
+      <div className="p-6">
+        <p className="text-sm font-semibold uppercase tracking-[0.3em] text-emerald-700">
+          {member?.role || "Position title"}
+        </p>
+        <h3 className="mt-3 text-xl font-bold text-slate-950">{member?.name || "Team member"}</h3>
+
+        <div className="mt-5 space-y-2 text-sm text-slate-600">
+          {member?.email ? (
+            <a href={`mailto:${member.email}`} className="flex items-center gap-2 transition hover:text-emerald-700">
+              <Mail size={15} className="text-emerald-600" />
+              {member.email}
+            </a>
+          ) : null}
+          {member?.phone ? (
+            <a href={`tel:${member.phone}`} className="flex items-center gap-2 transition hover:text-emerald-700">
+              <Phone size={15} className="text-emerald-600" />
+              {member.phone}
+            </a>
+          ) : null}
+          {member?.linkedin ? (
+            <a href={member.linkedin} target="_blank" rel="noreferrer" className="flex items-center gap-2 transition hover:text-emerald-700">
+              <Link2 size={15} className="text-emerald-600" />
+              LinkedIn profile
+            </a>
+          ) : null}
+        </div>
       </div>
     </article>
   );
@@ -389,13 +416,20 @@ export default async function AboutPage() {
       {about.team.length > 0 ? (
         <section className="bg-slate-50 px-6 py-20">
           <div className="mx-auto max-w-7xl">
-            <SectionTitle
-              eyebrow="People"
-              title="Leadership and team"
-              subtitle="When team members are stored in MongoDB, they are presented here as polished profile cards."
-            />
+            <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
+              <div className="max-w-2xl">
+                <SectionTitle
+                  eyebrow="People"
+                  title="Leadership and team"
+                  subtitle="The people behind the work are presented here with clear contact details and professional profile cards."
+                />
+              </div>
+              <div className="rounded-2xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-emerald-700">
+                {about.team.length} active team member{about.team.length === 1 ? "" : "s"}
+              </div>
+            </div>
 
-            <div className="grid gap-6 sm:grid-cols-2 xl:grid-cols-3">
+            <div className="mt-8 grid gap-6 sm:grid-cols-2 xl:grid-cols-3">
               {about.team.map((member) => (
                 <TeamCard key={member._id || member.name} member={member} />
               ))}

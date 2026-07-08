@@ -40,6 +40,15 @@ const emptyAbout = {
   projects: [],
 };
 
+const emptyTeamMember = {
+  name: "",
+  role: "",
+  image: "",
+  email: "",
+  phone: "",
+  linkedin: "",
+};
+
 function FormField({ label, value, onChange, type = "text", textarea = false }) {
   const className =
     "w-full p-2 rounded border border-slate-300 text-slate-900";
@@ -179,6 +188,8 @@ export default function AdminPage() {
   const [serviceForm, setServiceForm] = useState(emptyService);
   const [projectForm, setProjectForm] = useState(emptyProject);
   const [postForm, setPostForm] = useState(emptyPost);
+  const [teamMemberForm, setTeamMemberForm] = useState(emptyTeamMember);
+  const [editingTeamMemberIndex, setEditingTeamMemberIndex] = useState(null);
   const [editingServiceId, setEditingServiceId] = useState(null);
   const [editingProjectId, setEditingProjectId] = useState(null);
   const [editingPostId, setEditingPostId] = useState(null);
@@ -516,24 +527,108 @@ export default function AdminPage() {
     }
   }
 
-  async function saveAbout(e) {
-    e.preventDefault();
+  async function saveAboutContent(nextAbout, successMessage = "About page updated.") {
     const payload = {
-      ...about,
-      values: about.values.filter((v) => v.trim() !== ""),
+      ...nextAbout,
+      values: (nextAbout.values || []).filter((v) => v && v.trim() !== ""),
+      team: (nextAbout.team || [])
+        .map((member) => ({
+          ...member,
+          name: member.name?.trim() || "",
+          role: member.role?.trim() || "",
+          image: member.image?.trim() || "",
+          video: member.video?.trim() || "",
+          email: member.email?.trim() || "",
+          phone: member.phone?.trim() || "",
+          linkedin: member.linkedin?.trim() || "",
+        }))
+        .filter((member) => member.name || member.role || member.image || member.email || member.phone || member.linkedin || member.video),
     };
+
     const res = await fetch("/api/about", {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(payload),
       credentials: "include",
     });
+
     if (res.ok) {
-      setStatus("About page updated.");
+      const data = await res.json();
+      setAbout(data.about || payload);
+      setStatus(successMessage);
       await loadData();
-    } else {
-      setStatus("Failed to update about page.");
+      return true;
     }
+
+    setStatus("Failed to update about page.");
+    return false;
+  }
+
+  async function saveAbout(e) {
+    e.preventDefault();
+    await saveAboutContent(about);
+  }
+
+  async function saveTeamMember(e) {
+    e.preventDefault();
+
+    const nextTeamMember = {
+      name: teamMemberForm.name.trim(),
+      role: teamMemberForm.role.trim(),
+      image: teamMemberForm.image.trim(),
+      email: teamMemberForm.email.trim(),
+      phone: teamMemberForm.phone.trim(),
+      linkedin: teamMemberForm.linkedin.trim(),
+    };
+
+    if (!nextTeamMember.name || !nextTeamMember.role) {
+      setStatus("Please enter a name and position title for the team member.");
+      return;
+    }
+
+    const updatedTeam = editingTeamMemberIndex === null
+      ? [...(about.team || []), nextTeamMember]
+      : (about.team || []).map((member, index) =>
+          index === editingTeamMemberIndex ? nextTeamMember : member
+        );
+
+    const nextAbout = {
+      ...about,
+      team: updatedTeam,
+    };
+
+    const saved = await saveAboutContent(
+      nextAbout,
+      editingTeamMemberIndex === null ? "Team member added." : "Team member updated."
+    );
+
+    if (saved) {
+      setTeamMemberForm(emptyTeamMember);
+      setEditingTeamMemberIndex(null);
+    }
+  }
+
+  function editTeamMember(member, index) {
+    setEditingTeamMemberIndex(index);
+    setTeamMemberForm({
+      name: member.name || "",
+      role: member.role || "",
+      image: member.image || "",
+      email: member.email || "",
+      phone: member.phone || "",
+      linkedin: member.linkedin || "",
+    });
+    setStatus("");
+  }
+
+  async function deleteTeamMember(index) {
+    const updatedTeam = (about.team || []).filter((_, memberIndex) => memberIndex !== index);
+    const nextAbout = {
+      ...about,
+      team: updatedTeam,
+    };
+
+    await saveAboutContent(nextAbout, "Team member removed.");
   }
 
   const tabs = [
@@ -995,51 +1090,153 @@ export default function AdminPage() {
           )}
 
           {tab === "about" && (
-            <form
-              onSubmit={saveAbout}
-              className="bg-white border border-slate-200 rounded-xl p-6 space-y-4 max-w-3xl"
-            >
-              <h2 className="text-xl font-semibold">About Page Content</h2>
-              <FormField
-                label="History Text"
-                value={about.history?.text || ""}
-                onChange={(v) =>
-                  setAbout({
-                    ...about,
-                    history: { ...about.history, text: v },
-                  })
-                }
-                textarea
-              />
-              <FormField
-                label="Mission"
-                value={about.mission || ""}
-                onChange={(v) => setAbout({ ...about, mission: v })}
-                textarea
-              />
-              <FormField
-                label="Vision"
-                value={about.vision || ""}
-                onChange={(v) => setAbout({ ...about, vision: v })}
-                textarea
-              />
-              <FormField
-                label="Values (comma-separated)"
-                value={(about.values || []).join(", ")}
-                onChange={(v) =>
-                  setAbout({
-                    ...about,
-                    values: v.split(",").map((s) => s.trim()),
-                  })
-                }
-              />
-              <button
-                type="submit"
-                className="bg-emerald-600 text-white px-4 py-2 rounded-lg"
+            <div className="space-y-6 max-w-4xl">
+              <form
+                onSubmit={saveAbout}
+                className="bg-white border border-slate-200 rounded-xl p-6 space-y-4"
               >
-                Save About Page
-              </button>
-            </form>
+                <h2 className="text-xl font-semibold">About Page Content</h2>
+                <FormField
+                  label="History Text"
+                  value={about.history?.text || ""}
+                  onChange={(v) =>
+                    setAbout({
+                      ...about,
+                      history: { ...about.history, text: v },
+                    })
+                  }
+                  textarea
+                />
+                <FormField
+                  label="Mission"
+                  value={about.mission || ""}
+                  onChange={(v) => setAbout({ ...about, mission: v })}
+                  textarea
+                />
+                <FormField
+                  label="Vision"
+                  value={about.vision || ""}
+                  onChange={(v) => setAbout({ ...about, vision: v })}
+                  textarea
+                />
+                <FormField
+                  label="Values (comma-separated)"
+                  value={(about.values || []).join(", ")}
+                  onChange={(v) =>
+                    setAbout({
+                      ...about,
+                      values: v.split(",").map((s) => s.trim()),
+                    })
+                  }
+                />
+                <button
+                  type="submit"
+                  className="bg-emerald-600 text-white px-4 py-2 rounded-lg"
+                >
+                  Save About Page
+                </button>
+              </form>
+
+              <div className="bg-white border border-slate-200 rounded-xl p-6 space-y-4">
+                <div className="flex flex-col gap-2 md:flex-row md:items-center md:justify-between">
+                  <div>
+                    <h2 className="text-xl font-semibold">Team Members</h2>
+                    <p className="text-sm text-slate-500">
+                      Add each new employee with their profile image, business contact info, and LinkedIn link.
+                    </p>
+                  </div>
+                  <span className="rounded-full bg-slate-100 px-3 py-1 text-sm font-semibold text-slate-700">
+                    {(about.team || []).length} members
+                  </span>
+                </div>
+
+                <form onSubmit={saveTeamMember} className="grid gap-3 md:grid-cols-2">
+                  <FormField
+                    label="Full name"
+                    value={teamMemberForm.name}
+                    onChange={(v) => setTeamMemberForm({ ...teamMemberForm, name: v })}
+                  />
+                  <FormField
+                    label="Position title"
+                    value={teamMemberForm.role}
+                    onChange={(v) => setTeamMemberForm({ ...teamMemberForm, role: v })}
+                  />
+                  <FormField
+                    label="Profile photo URL"
+                    value={teamMemberForm.image}
+                    onChange={(v) => setTeamMemberForm({ ...teamMemberForm, image: v })}
+                  />
+                  <FileField
+                    label="Upload profile photo"
+                    accept="image/*"
+                    capture="environment"
+                    onFileSelect={(dataUrl) => setTeamMemberForm({ ...teamMemberForm, image: dataUrl })}
+                    description="Use a clear headshot for the About page gallery."
+                  />
+                  <FormField
+                    label="Email address"
+                    type="email"
+                    value={teamMemberForm.email}
+                    onChange={(v) => setTeamMemberForm({ ...teamMemberForm, email: v })}
+                  />
+                  <FormField
+                    label="Contact number"
+                    type="tel"
+                    value={teamMemberForm.phone}
+                    onChange={(v) => setTeamMemberForm({ ...teamMemberForm, phone: v })}
+                  />
+                  <div className="md:col-span-2">
+                    <FormField
+                      label="LinkedIn profile URL"
+                      type="url"
+                      value={teamMemberForm.linkedin}
+                      onChange={(v) => setTeamMemberForm({ ...teamMemberForm, linkedin: v })}
+                    />
+                  </div>
+                  <div className="md:col-span-2 flex flex-wrap gap-2">
+                    <button type="submit" className="bg-emerald-600 text-white px-4 py-2 rounded-lg">
+                      {editingTeamMemberIndex === null ? "Add team member" : "Update team member"}
+                    </button>
+                    {editingTeamMemberIndex !== null ? (
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setEditingTeamMemberIndex(null);
+                          setTeamMemberForm(emptyTeamMember);
+                        }}
+                        className="bg-slate-200 text-slate-700 px-4 py-2 rounded-lg"
+                      >
+                        Cancel
+                      </button>
+                    ) : null}
+                  </div>
+                </form>
+
+                <div className="space-y-3">
+                  {(about.team || []).length === 0 ? (
+                    <p className="text-sm text-slate-500">No team members have been added yet.</p>
+                  ) : (
+                    (about.team || []).map((member, index) => (
+                      <div key={member._id || `${member.name}-${index}`} className="rounded-2xl border border-slate-200 bg-slate-50 p-4 flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
+                        <div>
+                          <p className="font-semibold text-slate-900">{member.name || "Unnamed team member"}</p>
+                          <p className="text-sm text-slate-600">{member.role || "Position title"}</p>
+                          {member.email ? <p className="text-sm text-slate-500">{member.email}</p> : null}
+                        </div>
+                        <div className="flex flex-wrap gap-2">
+                          <button type="button" onClick={() => editTeamMember(member, index)} className="text-slate-700 text-sm font-medium">
+                            Edit
+                          </button>
+                          <button type="button" onClick={() => deleteTeamMember(index)} className="text-red-600 text-sm font-medium">
+                            Remove
+                          </button>
+                        </div>
+                      </div>
+                    ))
+                  )}
+                </div>
+              </div>
+            </div>
           )}
         </>
       )}

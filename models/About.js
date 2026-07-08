@@ -15,6 +15,9 @@ const TeamMemberSchema = new mongoose.Schema(
     role: String,
     image: String,
     video: String,
+    email: String,
+    phone: String,
+    linkedin: String,
   },
   { _id: true }
 );
