@@ -91,6 +91,18 @@ export default async function HomePage() {
     }
   }
 
+  const slideshowItems = [...projects, ...services]
+    .filter((item) => item?.image)
+    .slice(0, 3)
+    .map((item, index) => ({
+      id: String(item._id || index + 1),
+      title: item.title || "Featured story",
+      subtitle:
+        item.shortDescription || item.description || "A recent highlight from our work.",
+      image: item.image,
+      badge: projects.includes(item) ? "Project" : "Service",
+    }));
+
   return (
     <main>
       <FloatingActions />
@@ -198,7 +210,7 @@ export default async function HomePage() {
               </div>
             </div>
 
-            <SlidingShow />
+            <SlidingShow items={slideshowItems} />
           </div>
         </div>
       </section>

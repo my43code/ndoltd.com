@@ -3,6 +3,7 @@ export const revalidate = 60;
 import Link from "next/link";
 import Image from "next/image";
 import SectionTitle from "@/components/SectionTitle";
+import SlidingShow from "@/components/SlidingShow";
 import { connectMongoDB } from "@/lib/mongodb";
 import Post from "@/models/Post";
 
@@ -73,6 +74,40 @@ export default async function UpdatesPage() {
   return (
     <main className="bg-slate-50">
       <section className="mx-auto max-w-7xl px-4 py-12 sm:px-6 md:py-20 lg:px-6">
+        <section className="mb-10 overflow-hidden rounded-[2.25rem] border border-slate-200/80 bg-gradient-to-br from-slate-950 via-slate-900 to-emerald-950 p-6 text-white shadow-[0_30px_70px_-35px_rgba(15,23,42,0.5)] md:p-8 lg:p-10">
+          <div className="grid gap-8 lg:grid-cols-[0.9fr_1.1fr] lg:items-center">
+            <div className="max-w-xl">
+              <p className="text-xs font-semibold uppercase tracking-[0.32em] text-emerald-300">
+                Updates & stories
+              </p>
+              <h1 className="mt-4 text-3xl font-black tracking-tight text-white sm:text-4xl">
+                Fresh stories, polished presentation, and a clearer view of what we are building.
+              </h1>
+              <p className="mt-5 text-base leading-8 text-slate-300">
+                Browse the latest updates and let the visuals do the storytelling with a modern, cinematic flow that matches the rest of the site.
+              </p>
+              <div className="mt-6 flex flex-wrap gap-3">
+                <span className="rounded-full border border-white/10 bg-white/10 px-3 py-2 text-sm text-slate-200">
+                  Recent highlights
+                </span>
+                <span className="rounded-full border border-white/10 bg-white/10 px-3 py-2 text-sm text-slate-200">
+                  SEO-friendly stories
+                </span>
+              </div>
+            </div>
+
+            <SlidingShow
+              items={posts.slice(0, 3).map((post, index) => ({
+                id: String(post._id || index + 1),
+                title: post.title,
+                subtitle: post.summary || post.content?.slice(0, 140),
+                image: post.image || "/images/project1.webp",
+                badge: index === 0 ? "Featured" : index === 1 ? "Latest" : "Insight",
+              }))}
+            />
+          </div>
+        </section>
+
         <div className="grid gap-10 lg:grid-cols-[1.4fr_1fr] lg:items-start">
           <article className="group relative overflow-hidden rounded-[2rem] border border-slate-200/80 bg-slate-950 text-white shadow-[0_35px_70px_-35px_rgba(15,23,42,0.4)] transition-all duration-500 hover:-translate-y-0.5">
             {featuredPost ? (

@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import Image from 'next/image';
 
-const slides = [
+const defaultSlides = [
   {
     id: 1,
     title: 'Launch-ready digital experiences',
@@ -27,7 +27,17 @@ const slides = [
   },
 ];
 
-export default function SlidingShow() {
+export default function SlidingShow({ items = [] }) {
+  const slides = items.length > 0
+    ? items.map((item, index) => ({
+        id: item.id || item._id || index + 1,
+        title: item.title || 'Recent story',
+        subtitle: item.subtitle || item.summary || 'Fresh insight from our team.',
+        image: item.image || '/images/project1.webp',
+        badge: item.badge || 'Story',
+      }))
+    : defaultSlides;
+
   const [activeSlide, setActiveSlide] = useState(0);
 
   useEffect(() => {
@@ -36,7 +46,7 @@ export default function SlidingShow() {
     }, 4000);
 
     return () => window.clearInterval(timer);
-  }, []);
+  }, [slides.length]);
 
   return (
     <div className="relative overflow-hidden rounded-[2rem] border border-emerald-400/20 bg-slate-900/95 p-3 shadow-[0_24px_80px_rgba(2,6,23,0.35)]">
