@@ -36,12 +36,11 @@ export default async function Footer() {
   const phoneHref = getTelHref(contact.phone);
 
   return (
-    <footer className="mt-16 border-t border-white/10 bg-[linear-gradient(180deg,rgba(2,6,23,0.98)_0%,rgba(15,23,42,1)_100%)] text-white relative overflow-hidden">
-      {/* Animated background elements */}
-      <div className="absolute top-0 right-10 w-80 h-80 bg-emerald-500/5 rounded-full blur-3xl animate-pulse-slow"></div>
-      
-      <div className="mx-auto max-w-7xl px-6 py-16 relative z-10">
-        <div className="grid gap-10 md:grid-cols-[1.2fr_0.8fr_0.9fr]">
+    <footer className="mt-16 overflow-hidden border-t border-slate-200 bg-slate-950 text-white">
+      <div className="absolute top-0 right-10 h-72 w-72 rounded-full bg-emerald-500/8 blur-3xl" />
+
+      <div className="relative z-10 mx-auto max-w-7xl px-6 py-16">
+        <div className="grid gap-10 md:grid-cols-[1.15fr_0.75fr_0.95fr]">
           <div className="animate-fade-in-left">
             <div className="mb-5 animate-fade-in-up">
               <Logo />
@@ -68,37 +67,37 @@ export default async function Footer() {
           </div>
 
           <div className="animate-fade-in-up">
-            <h4 className="text-sm font-semibold uppercase tracking-[0.32em] text-emerald-300 glow-text animate-bounce-in">
+            <h4 className="text-sm font-semibold uppercase tracking-[0.32em] text-emerald-300 animate-bounce-in">
               Explore
             </h4>
             <div className="mt-5 flex flex-col gap-3 text-sm text-slate-300">
-              <Link href="/about" className="transition hover:text-white link-hover hover:translate-x-1">
+              <Link href="/about" className="transition hover:text-white hover:translate-x-1">
                 About Us
               </Link>
-              <Link href="/services" className="transition hover:text-white link-hover hover:translate-x-1">
+              <Link href="/services" className="transition hover:text-white hover:translate-x-1">
                 Services
               </Link>
-              <Link href="/updates" className="transition hover:text-white link-hover hover:translate-x-1">
+              <Link href="/updates" className="transition hover:text-white hover:translate-x-1">
                 Updates
               </Link>
-              <Link href="/contact" className="transition hover:text-white link-hover hover:translate-x-1">
+              <Link href="/contact" className="transition hover:text-white hover:translate-x-1">
                 Contact Us
               </Link>
-              <Link href="/login" className="transition hover:text-white link-hover hover:translate-x-1">
+              <Link href="/login" className="transition hover:text-white hover:translate-x-1">
                 Login
               </Link>
             </div>
           </div>
 
           <div className="animate-fade-in-right">
-            <h4 className="text-sm font-semibold uppercase tracking-[0.32em] text-emerald-300 glow-text animate-bounce-in">
+            <h4 className="text-sm font-semibold uppercase tracking-[0.32em] text-emerald-300 animate-bounce-in">
               Contact
             </h4>
             <div className="mt-5 space-y-4 text-sm text-slate-300">
               <p className="font-semibold text-white">{companyName}</p>
 
               {contact.address ? (
-                <div className="flex gap-3 hover:text-white transition">
+                <div className="flex gap-3 transition hover:text-white">
                   <FaMapMarkerAlt className="mt-1 shrink-0 text-emerald-300" />
                   <p>{contact.address}</p>
                 </div>
@@ -107,10 +106,7 @@ export default async function Footer() {
               {contact.email ? (
                 <div className="flex gap-3">
                   <FaEnvelope className="mt-1 shrink-0 text-emerald-300" />
-                  <a
-                    className="transition hover:text-white link-hover"
-                    href={`mailto:${contact.email}`}
-                  >
+                  <a className="transition hover:text-white" href={`mailto:${contact.email}`}>
                     {contact.email}
                   </a>
                 </div>
@@ -119,7 +115,7 @@ export default async function Footer() {
               {contact.phone ? (
                 <div className="flex gap-3">
                   <FaPhoneAlt className="mt-1 shrink-0 text-emerald-300" />
-                  <a className="transition hover:text-white link-hover" href={phoneHref}>
+                  <a className="transition hover:text-white" href={phoneHref}>
                     {contact.phone}
                   </a>
                 </div>

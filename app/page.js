@@ -121,92 +121,64 @@ export default async function HomePage() {
             <source src="/video/tech-video.mp4" type="video/mp4" />
           </video>
 
-          <div className="absolute inset-0 bg-[linear-gradient(130deg,rgba(2,6,23,0.98)_0%,rgba(15,23,42,0.72)_48%,rgba(6,78,59,0.55)_100%)]" />
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_20%,rgba(16,185,129,0.22),transparent_25%),radial-gradient(circle_at_80%_18%,rgba(250,204,21,0.14),transparent_18%),radial-gradient(circle_at_50%_80%,rgba(59,130,246,0.16),transparent_20%)]" />
+          <div className="absolute inset-0 bg-[linear-gradient(125deg,rgba(2,6,23,0.98)_0%,rgba(15,23,42,0.78)_45%,rgba(6,78,59,0.6)_100%)]" />
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_20%,rgba(16,185,129,0.22),transparent_24%),radial-gradient(circle_at_80%_18%,rgba(250,204,21,0.14),transparent_18%),radial-gradient(circle_at_50%_80%,rgba(59,130,246,0.16),transparent_20%)]" />
           <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.04)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.04)_1px,transparent_1px)] bg-[size:56px_56px] opacity-15" />
         </div>
 
-        <div className="relative mx-auto flex min-h-screen max-w-7xl flex-col justify-center px-6 py-24">
+        <div className="relative mx-auto flex min-h-screen max-w-7xl flex-col justify-center px-6 py-24 md:px-8">
           <div className="max-w-4xl">
             <span className="hero-fade-up inline-flex items-center gap-2 rounded-full border border-emerald-400/30 bg-emerald-400/10 px-4 py-2 text-sm font-medium text-emerald-200 backdrop-blur">
-              Web development | IT support | Digital solutions
+              Web development • IT support • Digital solutions
             </span>
 
             <h1 className="hero-fade-up-delay-1 mt-6 max-w-4xl text-5xl font-black tracking-tight text-white md:text-7xl">
-              <span className="block">Building smart digital products</span>
+              <span className="block">Building polished digital systems</span>
               <span className="hero-shimmer block bg-gradient-to-r from-emerald-300 via-white to-yellow-300 bg-clip-text text-transparent">
-                for PNG businesses.
+                for ambitious PNG businesses.
               </span>
             </h1>
 
             <p className="hero-fade-up-delay-2 mt-6 max-w-2xl text-base leading-8 text-slate-200 md:text-lg">
-              Nexus DevOps Limited delivers modern websites, mobile apps, and
-              IT systems that feel fast, reliable, and polished from the first
-              click.
+              Nexus DevOps Limited delivers professional websites, platform experiences, and dependable technical support that feel secure, modern, and memorable.
             </p>
 
             <div className="hero-fade-up-delay-3 mt-10 flex flex-wrap gap-4">
-              <Link
-                href="/services"
-                className="rounded-full bg-emerald-500 px-6 py-3 font-semibold text-slate-950 transition hover:bg-emerald-400"
-              >
+              <Link href="/services" className="btn-primary">
                 Explore Services
               </Link>
-
-              <Link
-                href="/yutok"
-                className="rounded-full border border-white/15 bg-white/5 px-6 py-3 font-semibold text-white backdrop-blur transition hover:border-white/30 hover:bg-white/10"
-              >
+              <Link href="/yutok" className="rounded-full border border-white/15 bg-white/5 px-6 py-3 font-semibold text-white backdrop-blur transition hover:border-white/30 hover:bg-white/10">
                 Try YuTok
               </Link>
             </div>
           </div>
 
           <div className="mt-16 grid gap-4 md:grid-cols-3">
-            <HeroCard
-              title="Fast builds"
-              description="Video-led, responsive, and conversion-focused experiences."
-              delayClass="hero-fade-up-delay-2"
-            />
-            <HeroCard
-              title="Reliable systems"
-              description="MongoDB-backed content with clean admin workflows."
-              floating
-              delayClass="hero-fade-up-delay-3"
-            />
-            <HeroCard
-              title="Local support"
-              description="Designed for teams in Papua New Guinea and beyond."
-              delayClass="hero-fade-up-delay-4"
-            />
+            <HeroCard title="Fast builds" description="Responsive, conversion-focused experiences built to perform." delayClass="hero-fade-up-delay-2" />
+            <HeroCard title="Reliable systems" description="MongoDB-backed content with clean administrative workflows." floating delayClass="hero-fade-up-delay-3" />
+            <HeroCard title="Local support" description="Professional service for teams in Papua New Guinea and beyond." delayClass="hero-fade-up-delay-4" />
           </div>
         </div>
       </section>
 
       <section className="relative overflow-hidden bg-slate-950 py-20">
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(16,185,129,0.16),transparent_40%),radial-gradient(circle_at_bottom_right,rgba(59,130,246,0.12),transparent_35%)] pointer-events-none" />
-        <div className="relative mx-auto max-w-7xl px-6">
+        <div className="relative mx-auto max-w-7xl px-6 md:px-8">
           <div className="grid items-center gap-12 lg:grid-cols-[1.05fr_0.95fr]">
             <div className="max-w-xl text-white">
               <p className="text-sm font-semibold uppercase tracking-[0.32em] text-emerald-300">
                 Visual workflow
               </p>
               <h2 className="mt-4 text-4xl font-black tracking-tight text-white md:text-5xl">
-                Polished slides that bring your brand to life.
+                A polished digital presence that earns trust.
               </h2>
               <p className="mt-6 text-base leading-8 text-slate-300">
-                We blend motion, strong visuals, and clean storytelling so your website feels modern, credible, and memorable from the first scroll.
+                We pair strong visuals, thoughtful structure, and seamless motion to create experiences that feel credible, modern, and memorable on every screen.
               </p>
               <div className="mt-8 flex flex-wrap gap-3">
-                <span className="rounded-full border border-white/10 bg-white/5 px-3 py-2 text-sm text-slate-200">
-                  Responsive design
-                </span>
-                <span className="rounded-full border border-white/10 bg-white/5 px-3 py-2 text-sm text-slate-200">
-                  SEO-ready structure
-                </span>
-                <span className="rounded-full border border-white/10 bg-white/5 px-3 py-2 text-sm text-slate-200">
-                  Faster engagement
-                </span>
+                <span className="rounded-full border border-white/10 bg-white/5 px-3 py-2 text-sm text-slate-200">Responsive design</span>
+                <span className="rounded-full border border-white/10 bg-white/5 px-3 py-2 text-sm text-slate-200">SEO-ready structure</span>
+                <span className="rounded-full border border-white/10 bg-white/5 px-3 py-2 text-sm text-slate-200">Stronger engagement</span>
               </div>
             </div>
 
@@ -215,10 +187,11 @@ export default async function HomePage() {
         </div>
       </section>
 
-      <section className="max-w-7xl mx-auto px-6 py-20">
+      <section className="mx-auto max-w-7xl px-6 py-20 md:px-8">
         <SectionTitle
-          title="Our Core Services"
-          subtitle="Services that we offer to help your business thrive in the digital age."
+          eyebrow="Core services"
+          title="Professional services for modern growth"
+          subtitle="We offer dependable digital solutions that help businesses present themselves clearly and operate with confidence."
         />
 
         <div className="mt-10 grid gap-8 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
@@ -226,7 +199,7 @@ export default async function HomePage() {
             services.slice(0, 6).map((service) => (
               <div
                 key={service._id}
-                className="flex flex-col overflow-hidden rounded-2xl border border-slate-100 bg-white shadow-md transition hover:shadow-xl"
+                className="brand-card flex flex-col overflow-hidden transition hover:-translate-y-1"
               >
                 <MediaPreview item={service} alt={service.title || "Service"} />
 

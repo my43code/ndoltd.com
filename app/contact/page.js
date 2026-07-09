@@ -80,7 +80,7 @@ export default async function ContactPage() {
         </div>
       </section>
 
-      <section className="mx-auto max-w-7xl px-6 py-16">
+      <section className="mx-auto max-w-7xl px-6 py-16 md:px-8">
         <SectionTitle
           eyebrow="Get in touch"
           title="Live contact details and response form"
