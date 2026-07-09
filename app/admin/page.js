@@ -640,8 +640,8 @@ export default function AdminPage() {
   ];
 
   return (
-    <div className="max-w-7xl mx-auto px-6 py-10">
-      <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-8">
+    <div className="mx-auto max-w-7xl overflow-x-hidden px-4 py-6 sm:px-6 sm:py-10">
+      <div className="mb-8 flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
         <div>
           <h1 className="text-3xl font-bold text-slate-900">Admin Dashboard</h1>
           <p className="text-slate-600 mt-1">
@@ -655,7 +655,7 @@ export default function AdminPage() {
         </div>
         <button
           onClick={() => signOut({ callbackUrl: "/login" })}
-          className="bg-slate-900 text-white px-4 py-2 rounded-lg hover:bg-slate-800"
+          className="w-full rounded-lg bg-slate-900 px-4 py-2 text-white transition hover:bg-slate-800 sm:w-auto"
         >
           Sign out
         </button>
@@ -667,12 +667,12 @@ export default function AdminPage() {
         </p>
       )}
 
-      <div className="flex flex-wrap gap-2 mb-8">
+      <div className="mb-8 flex flex-wrap gap-2">
         {tabs.map((t) => (
           <button
             key={t.id}
             onClick={() => setTab(t.id)}
-            className={`px-4 py-2 rounded-lg font-medium ${
+            className={`flex-1 rounded-lg px-4 py-2 text-sm font-medium sm:flex-none ${
               tab === t.id
                 ? "bg-emerald-600 text-white"
                 : "bg-slate-100 text-slate-700 hover:bg-slate-200"
@@ -1025,7 +1025,7 @@ export default function AdminPage() {
 
           {tab === "messages" && (
             <div className="space-y-4">
-              <div className="bg-white border border-slate-200 rounded-xl p-6">
+              <div className="rounded-xl border border-slate-200 bg-white p-4 sm:p-6">
                 <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
                   <div>
                     <h2 className="text-xl font-semibold">Contact Messages</h2>
@@ -1048,7 +1048,7 @@ export default function AdminPage() {
                   {messages.map((item) => (
                     <div
                       key={item._id}
-                      className="bg-white border border-slate-200 rounded-3xl p-6 shadow-sm"
+                      className="rounded-3xl border border-slate-200 bg-white p-4 shadow-sm sm:p-6"
                     >
                       <div className="flex flex-col gap-3 md:flex-row md:items-start md:justify-between">
                         <div>
@@ -1093,7 +1093,7 @@ export default function AdminPage() {
             <div className="space-y-6 max-w-4xl">
               <form
                 onSubmit={saveAbout}
-                className="bg-white border border-slate-200 rounded-xl p-6 space-y-4"
+                className="space-y-4 rounded-xl border border-slate-200 bg-white p-4 sm:p-6"
               >
                 <h2 className="text-xl font-semibold">About Page Content</h2>
                 <FormField
@@ -1137,7 +1137,7 @@ export default function AdminPage() {
                 </button>
               </form>
 
-              <div className="bg-white border border-slate-200 rounded-xl p-6 space-y-4">
+              <div className="space-y-4 rounded-xl border border-slate-200 bg-white p-4 sm:p-6">
                 <div className="flex flex-col gap-2 md:flex-row md:items-center md:justify-between">
                   <div>
                     <h2 className="text-xl font-semibold">Team Members</h2>
@@ -1217,7 +1217,7 @@ export default function AdminPage() {
                     <p className="text-sm text-slate-500">No team members have been added yet.</p>
                   ) : (
                     (about.team || []).map((member, index) => (
-                      <div key={member._id || `${member.name}-${index}`} className="rounded-2xl border border-slate-200 bg-slate-50 p-4 flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
+                      <div key={member._id || `${member.name}-${index}`} className="flex flex-col gap-3 rounded-2xl border border-slate-200 bg-slate-50 p-4 md:flex-row md:items-center md:justify-between">
                         <div>
                           <p className="font-semibold text-slate-900">{member.name || "Unnamed team member"}</p>
                           <p className="text-sm text-slate-600">{member.role || "Position title"}</p>

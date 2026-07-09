@@ -114,17 +114,17 @@ export default function LoginClient({ initialErrorCode = "" }) {
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,_rgba(16,185,129,0.25),_transparent_30%),radial-gradient(circle_at_bottom_left,_rgba(250,204,21,0.14),_transparent_26%),linear-gradient(135deg,_rgba(2,6,23,0.98),_rgba(15,23,42,0.92))]" />
       <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.05)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.05)_1px,transparent_1px)] bg-[size:48px_48px] opacity-15" />
 
-      <div className="relative mx-auto grid min-h-[calc(100vh-5rem)] max-w-6xl gap-10 px-6 py-12 lg:grid-cols-[1.1fr_0.9fr] lg:items-center lg:py-20">
+      <div className="relative mx-auto grid min-h-[calc(100vh-5rem)] w-full max-w-6xl gap-8 px-4 py-8 sm:px-6 sm:py-12 lg:grid-cols-[1.1fr_0.9fr] lg:items-center lg:gap-10 lg:py-20">
         <div className="max-w-2xl">
           <span className="inline-flex items-center rounded-full border border-emerald-400/30 bg-emerald-400/10 px-4 py-2 text-sm font-medium text-emerald-200">
             Admin access
           </span>
 
-          <h1 className="mt-6 text-4xl font-bold tracking-tight text-white md:text-6xl">
+          <h1 className="mt-6 text-3xl font-bold tracking-tight text-white sm:text-4xl md:text-6xl">
             Sign in with Google, GitHub, or your admin password.
           </h1>
 
-          <p className="mt-6 max-w-xl text-base leading-7 text-slate-300 md:text-lg">
+          <p className="mt-6 max-w-xl text-sm leading-7 text-slate-300 sm:text-base md:text-lg">
             Only approved admin accounts can enter the dashboard. Use the
             provider buttons below, or sign in with your shared admin email and
             password if that is how your team works.
@@ -142,20 +142,20 @@ export default function LoginClient({ initialErrorCode = "" }) {
             </span>
           </div>
 
-          <div className="mt-10 flex items-center gap-4 text-sm text-slate-400">
+          <div className="mt-10 flex flex-col gap-3 text-sm text-slate-400 sm:flex-row sm:items-center sm:gap-4">
             <Link
               href="/"
               className="font-medium text-emerald-300 hover:text-emerald-200"
             >
               Back to home
             </Link>
-            <span className="h-4 w-px bg-white/20" />
+            <span className="hidden h-4 w-px bg-white/20 sm:block" />
             <span>After sign in, you will be sent to the dashboard.</span>
           </div>
         </div>
 
-        <div className="rounded-[2rem] border border-white/10 bg-slate-900/70 p-6 shadow-2xl shadow-black/30 backdrop-blur-xl">
-          <div className="rounded-[1.5rem] border border-white/10 bg-white/5 p-6">
+        <div className="rounded-[2rem] border border-white/10 bg-slate-900/70 p-4 shadow-2xl shadow-black/30 backdrop-blur-xl sm:p-6">
+          <div className="rounded-[1.5rem] border border-white/10 bg-white/5 p-4 sm:p-6">
             <h2 className="text-2xl font-semibold text-white">
               Choose a sign-in method
             </h2>
@@ -178,7 +178,7 @@ export default function LoginClient({ initialErrorCode = "" }) {
                     type="button"
                     onClick={() => handleOAuthSignIn(provider.id)}
                     disabled={loadingProvider === provider.id}
-                    className="flex w-full items-center justify-between rounded-2xl border border-white/10 bg-white/5 px-4 py-4 text-left text-sm font-medium text-white transition hover:border-emerald-400/40 hover:bg-emerald-400/10 disabled:cursor-not-allowed disabled:opacity-60"
+                    className="flex w-full flex-col gap-3 rounded-2xl border border-white/10 bg-white/5 px-4 py-4 text-left text-sm font-medium text-white transition hover:border-emerald-400/40 hover:bg-emerald-400/10 disabled:cursor-not-allowed disabled:opacity-60 sm:flex-row sm:items-center sm:justify-between"
                   >
                     <span className="flex items-center gap-3">
                       <span className="grid h-10 w-10 place-items-center rounded-full bg-black/30 ring-1 ring-white/10">
