@@ -8,7 +8,7 @@ import { FaGithub, FaGoogle } from "react-icons/fa";
 
 const errorMessages = {
   AccessDenied: "That account is not allowed to administer this site.",
-  CredentialsSignin: "Invalid admin email or password.",
+  CredentialsSignin: "Invalid admin email or verification code.",
   Configuration: "Authentication is not configured yet.",
   OAuthAccountNotLinked:
     "Please sign in with the same provider you used before.",
@@ -42,6 +42,7 @@ export default function LoginClient({ initialErrorCode = "" }) {
     email: "",
     password: "",
   });
+  const [otpPending, setOtpPending] = useState(false);
 
   useEffect(() => {
     if (status === "authenticated") {
@@ -81,22 +82,31 @@ export default function LoginClient({ initialErrorCode = "" }) {
   async function handleCredentialsSubmit(event) {
     event.preventDefault();
     setLoadingProvider("credentials");
+    setOtpPending(true);
     setError("");
 
-    const result = await signIn("credentials", {
-      redirect: false,
-      callbackUrl: "/admin",
-      email: credentials.email,
-      password: credentials.password,
+    const response = await fetch("/api/auth/otp", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ identifier: credentials.email, password: credentials.password }),
     });
 
-    if (result?.error) {
-      setError(getErrorMessage(result.error));
-      setLoadingProvider("");
+    const data = await response.json();
+    setLoadingProvider("");
+    setOtpPending(false);
+
+    if (!response.ok) {
+      setError(data?.error || "Unable to send a code right now.");
       return;
     }
 
-    router.push(result?.url || "/admin");
+    const sessionToken = data?.sessionToken;
+    if (!sessionToken) {
+      setError("Unable to start verification.");
+      return;
+    }
+
+    router.push(`/login/verify?token=${encodeURIComponent(sessionToken)}`);
   }
 
   if (status === "loading") {
@@ -121,13 +131,13 @@ export default function LoginClient({ initialErrorCode = "" }) {
           </span>
 
           <h1 className="mt-6 text-3xl font-bold tracking-tight text-white sm:text-4xl md:text-6xl">
-            Sign in with Google, GitHub, or your admin password.
+            Sign in with Google, GitHub, or admin password + OTP.
           </h1>
 
           <p className="mt-6 max-w-xl text-sm leading-7 text-slate-300 sm:text-base md:text-lg">
-            Only approved admin accounts can enter the dashboard. Use the
-            provider buttons below, or sign in with your shared admin email and
-            password if that is how your team works.
+            Only approved admin accounts can enter the dashboard. Enter the
+            admin password first, then verify with a one-time code sent by email
+            or SMS.
           </p>
 
           <div className="mt-8 flex flex-wrap gap-3 text-sm text-slate-300">
@@ -214,10 +224,10 @@ export default function LoginClient({ initialErrorCode = "" }) {
             <form onSubmit={handleCredentialsSubmit} className="space-y-4">
               <div>
                 <label className="mb-2 block text-sm font-medium text-slate-200">
-                  Admin email
+                  Admin email or phone
                 </label>
                 <input
-                  type="email"
+                  type="text"
                   value={credentials.email}
                   onChange={(event) =>
                     setCredentials((current) => ({
@@ -226,15 +236,15 @@ export default function LoginClient({ initialErrorCode = "" }) {
                     }))
                   }
                   className="w-full rounded-2xl border border-white/10 bg-slate-950/60 px-4 py-3 text-white outline-none transition placeholder:text-slate-500 focus:border-emerald-400/60"
-                  placeholder="admin@example.com"
-                  autoComplete="email"
+                  placeholder="admin@example.com or +123456789"
+                  autoComplete="off"
                   required
                 />
               </div>
 
               <div>
                 <label className="mb-2 block text-sm font-medium text-slate-200">
-                  Password
+                  Admin password
                 </label>
                 <input
                   type="password"
@@ -254,12 +264,12 @@ export default function LoginClient({ initialErrorCode = "" }) {
 
               <button
                 type="submit"
-                disabled={loadingProvider === "credentials"}
+                disabled={loadingProvider === "credentials" || otpPending}
                 className="flex w-full items-center justify-center rounded-2xl bg-emerald-500 px-4 py-3 font-semibold text-slate-950 transition hover:bg-emerald-400 disabled:cursor-not-allowed disabled:opacity-70"
               >
-                {loadingProvider === "credentials"
-                  ? "Signing in..."
-                  : "Sign in with password"}
+                {loadingProvider === "credentials" || otpPending
+                  ? "Sending code..."
+                  : "Send verification code"}
               </button>
             </form>
           </div>
