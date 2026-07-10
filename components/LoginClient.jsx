@@ -34,10 +34,11 @@ function ProviderIcon({ id }) {
 
 export default function LoginClient({ initialErrorCode = "" }) {
   const router = useRouter();
-  const { status } = useSession();
+  const { data: session, status } = useSession();
   const [providers, setProviders] = useState(null);
   const [loadingProvider, setLoadingProvider] = useState("");
   const [error, setError] = useState("");
+  const [hydrated, setHydrated] = useState(false);
   const [credentials, setCredentials] = useState({
     email: "",
     password: "",
@@ -45,10 +46,14 @@ export default function LoginClient({ initialErrorCode = "" }) {
   const [otpPending, setOtpPending] = useState(false);
 
   useEffect(() => {
-    if (status === "authenticated") {
+    if (status === "authenticated" && session?.user) {
       router.replace("/admin");
     }
-  }, [router, status]);
+  }, [router, session, status]);
+
+  useEffect(() => {
+    setHydrated(true);
+  }, []);
 
   useEffect(() => {
     let mounted = true;
@@ -109,11 +114,22 @@ export default function LoginClient({ initialErrorCode = "" }) {
     router.push(`/login/verify?token=${encodeURIComponent(sessionToken)}`);
   }
 
-  if (status === "loading") {
+  if (!hydrated || status === "loading") {
     return (
       <section className="min-h-[70vh] flex items-center justify-center bg-slate-950 px-6 text-white">
         <div className="rounded-3xl border border-white/10 bg-white/5 px-6 py-4 backdrop-blur">
           Checking your session...
+        </div>
+      </section>
+    );
+  }
+
+  if (status === "authenticated" && session?.user) {
+    return (
+      <section className="min-h-[70vh] flex items-center justify-center bg-slate-950 px-6 text-white">
+        <div className="rounded-3xl border border-white/10 bg-white/5 px-6 py-8 text-center backdrop-blur">
+          <h2 className="text-2xl font-semibold">You are already signed in</h2>
+          <p className="mt-3 text-sm text-slate-300">Redirecting you to the admin dashboard.</p>
         </div>
       </section>
     );

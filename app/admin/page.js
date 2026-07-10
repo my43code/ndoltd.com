@@ -51,17 +51,17 @@ const emptyTeamMember = {
 
 function FormField({ label, value, onChange, type = "text", textarea = false }) {
   const className =
-    "w-full p-2 rounded border border-slate-300 text-slate-900";
+    "w-full rounded-xl border border-slate-300 bg-white px-3 py-3 text-sm text-slate-900 shadow-sm outline-none transition focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20 sm:text-base";
 
   return (
-    <div>
-      <label className="block text-sm font-medium text-slate-700 mb-1">
+    <div className="space-y-2">
+      <label className="block text-sm font-semibold text-slate-700">
         {label}
       </label>
       {textarea ? (
         <textarea
-          className={className}
-          rows={3}
+          className={`${className} min-h-[110px] resize-y`}
+          rows={4}
           value={value}
           onChange={(e) => onChange(e.target.value)}
         />
@@ -97,7 +97,7 @@ function FileField({ label, accept, onFileSelect, description, capture }) {
 
     if (fileSizeInMB > maxSize) {
       setSizeWarning(
-        `File size (${fileSizeInMB.toFixed(1)}MB) exceeds recommended limit (${maxSize}MB). Video may not play properly.`
+        `This ${isVideo ? "video" : "image"} is ${fileSizeInMB.toFixed(1)}MB. For best mobile performance, keep it under ${maxSize}MB.`
       );
       return;
     } else {
@@ -109,32 +109,46 @@ function FileField({ label, accept, onFileSelect, description, capture }) {
   };
 
   return (
-    <div>
-      <label className="block text-sm font-medium text-slate-700 mb-1">
+    <div className="space-y-2">
+      <label className="block text-sm font-semibold text-slate-700">
         {label}
       </label>
-      <label className="flex items-center justify-between w-full rounded-lg border border-slate-300 bg-slate-50 px-4 py-3 text-slate-700 cursor-pointer hover:bg-slate-100">
-        <span className="text-sm font-medium">Choose file from your device</span>
-        <span className="text-sm text-slate-500">Browse</span>
+      <label className="flex cursor-pointer flex-col gap-3 rounded-2xl border border-dashed border-slate-300 bg-slate-50 px-3 py-3 text-slate-700 shadow-sm transition hover:border-emerald-400 hover:bg-emerald-50/50 sm:flex-row sm:items-center sm:justify-between sm:px-4">
+        <div className="min-w-0">
+          <p className="text-sm font-semibold text-slate-800">
+            Choose {isVideo ? "video" : "image"} from your device
+          </p>
+          <p className="text-xs text-slate-500 sm:text-sm">
+            {description || "Pick a file or use your camera from the device picker."}
+          </p>
+        </div>
+        <span className="inline-flex items-center justify-center rounded-full border border-slate-200 bg-white px-3 py-2 text-sm font-semibold text-slate-700 shadow-sm">
+          Browse
+        </span>
         <input
           type="file"
           accept={accept}
           capture={capture}
           onChange={handleFileSelect}
-          className="hidden"
+          className="sr-only"
+          aria-label={label}
         />
       </label>
       {fileName ? (
-        <p className="text-xs text-slate-500 mt-1">Selected file: {fileName} ({fileSize.toFixed(1)}MB)</p>
+        <p className="text-xs text-slate-500 sm:text-sm">
+          Selected file: {fileName} ({fileSize.toFixed(1)}MB)
+        </p>
       ) : null}
       {sizeWarning ? (
-        <p className="text-xs text-amber-600 mt-1 font-medium">{sizeWarning}</p>
+        <p className="text-xs font-medium text-amber-600 sm:text-sm">{sizeWarning}</p>
       ) : null}
-      {description ? (
-        <p className="text-xs text-slate-500 mt-1">{description}</p>
+      {!fileName && description ? (
+        <p className="text-xs text-slate-500 sm:text-sm">{description}</p>
       ) : null}
       {isVideo && (
-        <p className="text-xs text-slate-500 mt-2">Tip: For better video playback, use shorter videos (under 30 seconds) or provide an external video URL instead.</p>
+        <p className="text-xs text-slate-500 sm:text-sm">
+          Tip: For smoother playback, keep videos short and under {maxVideoSizeInMB}MB when possible.
+        </p>
       )}
     </div>
   );
@@ -641,21 +655,21 @@ export default function AdminPage() {
 
   return (
     <div className="mx-auto max-w-7xl overflow-x-hidden px-4 py-6 sm:px-6 sm:py-10">
-      <div className="mb-8 flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
-        <div>
-          <h1 className="text-3xl font-bold text-slate-900">Admin Dashboard</h1>
-          <p className="text-slate-600 mt-1">
+      <div className="mb-8 flex flex-col gap-4 rounded-3xl border border-slate-200 bg-white/80 p-4 shadow-sm backdrop-blur sm:p-6 md:flex-row md:items-start md:justify-between">
+        <div className="min-w-0">
+          <h1 className="text-2xl font-bold text-slate-900 sm:text-3xl">Admin Dashboard</h1>
+          <p className="mt-1 text-sm text-slate-600 sm:text-base">
             Manage services, projects, posts, and about content.
           </p>
           {session?.user?.email ? (
-            <p className="text-sm text-slate-500 mt-1">
+            <p className="mt-2 text-sm text-slate-500">
               Signed in as {session.user.email}
             </p>
           ) : null}
         </div>
         <button
           onClick={() => signOut({ callbackUrl: "/login" })}
-          className="w-full rounded-lg bg-slate-900 px-4 py-2 text-white transition hover:bg-slate-800 sm:w-auto"
+          className="w-full rounded-xl bg-slate-900 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-slate-800 sm:w-auto sm:text-base"
         >
           Sign out
         </button>
@@ -672,9 +686,9 @@ export default function AdminPage() {
           <button
             key={t.id}
             onClick={() => setTab(t.id)}
-            className={`flex-1 rounded-lg px-4 py-2 text-sm font-medium sm:flex-none ${
+            className={`min-w-[7rem] flex-1 rounded-xl px-4 py-2.5 text-sm font-semibold sm:flex-none ${
               tab === t.id
-                ? "bg-emerald-600 text-white"
+                ? "bg-emerald-600 text-white shadow-sm"
                 : "bg-slate-100 text-slate-700 hover:bg-slate-200"
             }`}
           >
@@ -692,10 +706,10 @@ export default function AdminPage() {
       ) : (
         <>
           {tab === "services" && (
-            <div className="grid lg:grid-cols-2 gap-8">
+            <div className="grid gap-4 lg:grid-cols-2 lg:gap-8">
               <form
                 onSubmit={editingServiceId ? updateService : createService}
-                className="bg-white border border-slate-200 rounded-xl p-6 space-y-3"
+                className="space-y-4 rounded-2xl border border-slate-200 bg-white p-4 shadow-sm sm:p-6"
               >
                 <h2 className="text-xl font-semibold">
                   {editingServiceId ? "Edit Service" : "Add Service"}
@@ -789,16 +803,16 @@ export default function AdminPage() {
                           {item.shortDescription || item.description}
                         </p>
                       </div>
-                      <div className="flex gap-2">
+                      <div className="flex flex-wrap gap-2">
                         <button
                           onClick={() => editService(item)}
-                          className="text-slate-700 text-sm font-medium"
+                          className="rounded-lg border border-slate-200 px-3 py-2 text-sm font-semibold text-slate-700"
                         >
                           Edit
                         </button>
                         <button
                           onClick={() => deleteService(item._id)}
-                          className="text-red-600 text-sm font-medium"
+                          className="rounded-lg border border-red-200 px-3 py-2 text-sm font-semibold text-red-600"
                         >
                           Delete
                         </button>
@@ -811,10 +825,10 @@ export default function AdminPage() {
           )}
 
           {tab === "projects" && (
-            <div className="grid lg:grid-cols-2 gap-8">
+            <div className="grid gap-4 lg:grid-cols-2 lg:gap-8">
               <form
                 onSubmit={editingProjectId ? updateProject : createProject}
-                className="bg-white border border-slate-200 rounded-xl p-6 space-y-3"
+                className="space-y-4 rounded-2xl border border-slate-200 bg-white p-4 shadow-sm sm:p-6"
               >
                 <h2 className="text-xl font-semibold">
                   {editingProjectId ? "Edit Project" : "Add Project"}
@@ -908,16 +922,16 @@ export default function AdminPage() {
                           {item.shortDescription || item.description}
                         </p>
                       </div>
-                      <div className="flex gap-2">
+                      <div className="flex flex-wrap gap-2">
                         <button
                           onClick={() => editProject(item)}
-                          className="text-slate-700 text-sm font-medium"
+                          className="rounded-lg border border-slate-200 px-3 py-2 text-sm font-semibold text-slate-700"
                         >
                           Edit
                         </button>
                         <button
                           onClick={() => deleteProject(item._id)}
-                          className="text-red-600 text-sm font-medium"
+                          className="rounded-lg border border-red-200 px-3 py-2 text-sm font-semibold text-red-600"
                         >
                           Delete
                         </button>
@@ -930,10 +944,10 @@ export default function AdminPage() {
           )}
 
           {tab === "posts" && (
-            <div className="grid lg:grid-cols-2 gap-8">
+            <div className="grid gap-4 lg:grid-cols-2 lg:gap-8">
               <form
                 onSubmit={editingPostId ? updatePost : createPost}
-                className="bg-white border border-slate-200 rounded-xl p-6 space-y-3"
+                className="space-y-4 rounded-2xl border border-slate-200 bg-white p-4 shadow-sm sm:p-6"
               >
                 <h2 className="text-xl font-semibold">
                   {editingPostId ? "Edit Post" : "Add Post"}
@@ -1002,16 +1016,16 @@ export default function AdminPage() {
                           {item.summary}
                         </p>
                       </div>
-                      <div className="flex gap-2">
+                      <div className="flex flex-wrap gap-2">
                         <button
                           onClick={() => editPost(item)}
-                          className="text-slate-700 text-sm font-medium"
+                          className="rounded-lg border border-slate-200 px-3 py-2 text-sm font-semibold text-slate-700"
                         >
                           Edit
                         </button>
                         <button
                           onClick={() => deletePost(item._id)}
-                          className="text-red-600 text-sm font-medium"
+                          className="rounded-lg border border-red-200 px-3 py-2 text-sm font-semibold text-red-600"
                         >
                           Delete
                         </button>
